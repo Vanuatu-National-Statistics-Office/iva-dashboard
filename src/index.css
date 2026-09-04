@@ -235,3 +235,34 @@ footer a:hover { text-decoration: underline; }
   .surface-bar, .panel, .kpi-card { box-shadow: none; break-inside: avoid; }
   .data-table tbody tr { cursor: default; }
 }
+.vbos-header-logo {
+  width: 82px;
+  height: 72px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.coat-arms-logo {
+  width: 78px;
+  height: 78px;
+  object-fit: contain;
+  margin-bottom: 8px;
+}
+
+.hero-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 680px) {
+  .vbos-header-logo {
+    width: 58px;
+    height: 52px;
+  }
+
+  .coat-arms-logo {
+    width: 55px;
+    height: 55px;
+  }
+}
