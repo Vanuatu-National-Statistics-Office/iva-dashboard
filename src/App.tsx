@@ -442,18 +442,7 @@ export default function App() {
   </a>
 
 </div>
-            <div className="period-box">
-              <CalendarDays size={21} />
-              <div>
-                <span>Reporting period</span>
-                <strong>{data.month} {data.year}</strong>
-                {data.provisional && <em>Provisional</em>}
-              </div>
-            </div>
-            <a className="website-link" href="https://vbos.gov.vu" target="_blank" rel="noreferrer">
-              vbos.gov.vu <ExternalLink size={14} />
-            </a>
-          </div>
+         
         </div>
       </header>
 
