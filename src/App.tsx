@@ -376,20 +376,72 @@ export default function App() {
     <div className="app-shell">
       <header className="hero">
         <div className="hero-inner">
-          <div className="hero-copy">
-            <div className="brand-line">
-              <div className="brand-mark" aria-hidden="true">VBoS</div>
-              <div>
-                <div className="eyebrow">Vanuatu Bureau of Statistics</div>
-                <div className="brand-subtitle">Official Statistics · Tourism</div>
-              </div>
-            </div>
-            <h1>International Visitor Arrivals</h1>
-            <p className="hero-title-sub">Statistics Dashboard</p>
-            <p className="hero-description">Interactive statistics on visitor arrivals, source markets, purpose of visit and departures.</p>
-          </div>
+         <div className="hero-copy">
 
-          <div className="hero-side">
+  <div className="brand-line">
+    <img
+      src={`${import.meta.env.BASE_URL}images/VBoS_logo.png`}
+      alt="Vanuatu Bureau of Statistics"
+      className="vbos-header-logo"
+    />
+
+    <div>
+      <div className="eyebrow">
+        Vanuatu Bureau of Statistics
+      </div>
+
+      <div className="brand-subtitle">
+        Official Statistics · Tourism
+      </div>
+    </div>
+  </div>
+
+  <h1>International Visitor Arrivals</h1>
+
+  <p className="hero-title-sub">
+    Statistics Dashboard
+  </p>
+
+  <p className="hero-description">
+    Interactive statistics on visitor arrivals, source markets,
+    purpose of visit and departures.
+  </p>
+
+</div>
+
+
+<div className="hero-side">
+
+  <img
+    src={`${import.meta.env.BASE_URL}images/Coat of arms.png`}
+    alt="Vanuatu Coat of Arms"
+    className="coat-arms-logo"
+  />
+
+  <div className="period-box">
+    <CalendarDays size={21} />
+
+    <div>
+      <span>Reporting period</span>
+
+      <strong>
+        {data.month} {data.year}
+      </strong>
+
+      {data.provisional && <em>Provisional</em>}
+    </div>
+  </div>
+
+  <a
+    className="website-link"
+    href="https://vbos.gov.vu"
+    target="_blank"
+    rel="noreferrer"
+  >
+    vbos.gov.vu <ExternalLink size={14} />
+  </a>
+
+</div>
             <div className="period-box">
               <CalendarDays size={21} />
               <div>
