@@ -380,7 +380,7 @@ export default function App() {
 
   <div className="brand-line">
     <img
-      src={`${import.meta.env.BASE_URL}images/VBoS_logo.png`}
+      src="/iva-dashboard/images/VBoS_logo.png"
       alt="Vanuatu Bureau of Statistics"
       className="vbos-header-logo"
     />
@@ -413,7 +413,7 @@ export default function App() {
 <div className="hero-side">
 
   <img
-    src={`${import.meta.env.BASE_URL}images/Coat of arms.png`}
+    src="/iva-dashboard/images/Coat%20of%20arms.png"
     alt="Vanuatu Coat of Arms"
     className="coat-arms-logo"
   />
