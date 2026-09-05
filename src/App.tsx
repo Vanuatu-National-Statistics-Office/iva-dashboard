@@ -25,6 +25,15 @@ import { iva2026, monthOrder, type MonthData, type MonthName } from './data'
 const number = new Intl.NumberFormat('en-US')
 const pct = (value: number) => `${Math.round(value)}%`
 
+const REPORT_URLS: Record<MonthName, string> = {
+  January: '/iva-dashboard/reports/iva-january-2026.pdf',
+  February: '/iva-dashboard/reports/iva-february-2026.pdf',
+  March: '/iva-dashboard/reports/iva-march-2026.pdf',
+  April: '/iva-dashboard/reports/iva-april-2026.pdf',
+  May: '/iva-dashboard/reports/iva-may-2026.pdf',
+  June: '/iva-dashboard/reports/iva-june-2026.pdf',
+}
+
 const COLORS = {
   teal: '#2f8799',
   tealDark: '#1f6676',
@@ -463,9 +472,14 @@ export default function App() {
             {data.provisional && <span className="status-badge">Provisional figures</span>}
           </div>
           <div className="toolbar-actions">
-            <button type="button" className="action-button secondary" onClick={downloadSelectedMonth}>
-              <Download size={16} /> Selected month
-            </button>
+            <a
+              className="action-button secondary"
+              href={REPORT_URLS[selectedMonth]}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <ExternalLink size={16} /> View Full Report
+            </a>
             <button type="button" className="action-button" onClick={() => window.print()}>
               <Printer size={16} /> Print
             </button>
