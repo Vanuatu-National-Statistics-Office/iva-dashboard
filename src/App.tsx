@@ -413,7 +413,7 @@ export default function App() {
 <div className="hero-side">
 
   <img
-    src="/iva-dashboard/images/Coat%20of%20arms.png"
+    src="/iva-dashboard/images/vanuatu-coat-of-arms.png"
     alt="Vanuatu Coat of Arms"
     className="coat-arms-logo"
   />
