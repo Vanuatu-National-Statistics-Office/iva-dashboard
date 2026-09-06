@@ -8,3 +8,12 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <App />
   </React.StrictMode>,
 )
+
+// Register the PWA service worker on the published HTTPS site.
+if ('serviceWorker' in navigator && window.location.protocol === 'https:') {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/iva-dashboard/sw.js')
+      .catch((error) => console.error('Service worker registration failed:', error))
+  })
+}
