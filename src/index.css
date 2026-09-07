@@ -119,6 +119,16 @@ select:disabled { color: #657985; background: #f4f7f8; }
 .toolbar-actions, .data-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .action-button { text-decoration: none; border: 1px solid #286f80; border-radius: 9px; padding: 9px 12px; background: #286f80; color: white; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: 12px; font-weight: 750; transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
 .action-button:hover { background: #1f6170; box-shadow: 0 5px 13px rgba(28, 90, 104, .18); transform: translateY(-1px); }
+.install-button {
+  background: #e7a632;
+  border-color: #e7a632;
+  color: #17303d;
+}
+
+.install-button:hover {
+  background: #d99721;
+  border-color: #d99721;
+}
 .action-button.secondary { color: #245e6c; background: #f6fbfc; border-color: #b9d3da; }
 .action-button.secondary:hover { background: #eaf6f8; }
 
@@ -236,6 +246,7 @@ footer a:hover { text-decoration: underline; }
   .kpi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .source-note { flex-basis: 100%; padding-bottom: 0; }
   .toolbar-actions { width: 100%; }
+  .install-button { flex-basis: 100% !important; }
   .toolbar-actions .action-button { flex: 1; }
   .rank-row { grid-template-columns: 26px minmax(0, 1fr) 64px 52px; }
 }

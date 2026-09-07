@@ -1,4 +1,4 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import {
@@ -21,7 +21,13 @@ import {
   Users,
 } from 'lucide-react'
 import { iva2026, monthOrder, type MonthData, type MonthName } from './data'
-
+interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>
+  userChoice: Promise<{
+    outcome: 'accepted' | 'dismissed'
+    platform: string
+  }>
+}
 const number = new Intl.NumberFormat('en-US')
 const pct = (value: number) => `${Math.round(value)}%`
 
@@ -146,6 +152,54 @@ function selectedMonthRows(data: MonthData): Array<Array<string | number>> {
 export default function App() {
   const latestMonth = monthOrder[monthOrder.length - 1]
 const [selectedMonth, setSelectedMonth] = useState<MonthName>(latestMonth)
+const [installPrompt, setInstallPrompt] =
+  useState<BeforeInstallPromptEvent | null>(null)
+
+const [showIosInstall, setShowIosInstall] = useState(false)
+const [isMobileDevice, setIsMobileDevice] = useState(false)
+
+useEffect(() => {
+  const handleBeforeInstallPrompt = (event: Event) => {
+    event.preventDefault()
+    setInstallPrompt(event as BeforeInstallPromptEvent)
+  }
+
+  const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent)
+  const isMobile =
+  /android|iphone|ipad|ipod/i.test(window.navigator.userAgent) ||
+  window.innerWidth <= 900
+  const isStandalone =
+    window.matchMedia('(display-mode: standalone)').matches ||
+    ('standalone' in window.navigator &&
+      (window.navigator as Navigator & { standalone?: boolean }).standalone === true)
+
+  setShowIosInstall(isIos && !isStandalone)
+  setIsMobileDevice(isMobile && !isStandalone)
+
+  window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+
+  return () => {
+    window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt)
+  }
+}, [])
+const handleInstallApp = async () => {
+  if (showIosInstall) {
+  window.alert(
+    'To install IVA App on iPhone or iPad: tap the Share button, then choose "Add to Home Screen".'
+  )
+  return
+}
+
+window.alert(
+  'To install IVA App: open your browser menu and choose "Install app" or "Add to Home screen".'
+)
+
+  if (showIosInstall) {
+    window.alert(
+      'To install IVA App on iPhone or iPad: tap the Share button, then choose "Add to Home Screen".'
+    )
+  }
+}
   const data = iva2026[selectedMonth]
   const monthIndex = monthOrder.indexOf(selectedMonth)
   const previousMonth = monthIndex > 0 ? monthOrder[monthIndex - 1] : null
@@ -473,6 +527,15 @@ const sortedCountries = [...data.countries].sort(
             {data.provisional && <span className="status-badge">Provisional figures</span>}
           </div>
           <div className="toolbar-actions">
+            {(installPrompt || showIosInstall || isMobileDevice) && (
+  <button
+    type="button"
+    className="action-button install-button"
+    onClick={handleInstallApp}
+  >
+    <Download size={16} /> Install IVA App
+  </button>
+)}
             <a
               className="action-button secondary"
               href={reportUrl(selectedMonth)}
