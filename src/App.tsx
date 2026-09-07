@@ -25,14 +25,7 @@ import { iva2026, monthOrder, type MonthData, type MonthName } from './data'
 const number = new Intl.NumberFormat('en-US')
 const pct = (value: number) => `${Math.round(value)}%`
 
-const REPORT_URLS: Record<MonthName, string> = {
-  January: '/iva-dashboard/reports/iva-january-2026.pdf',
-  February: '/iva-dashboard/reports/iva-february-2026.pdf',
-  March: '/iva-dashboard/reports/iva-march-2026.pdf',
-  April: '/iva-dashboard/reports/iva-april-2026.pdf',
-  May: '/iva-dashboard/reports/iva-may-2026.pdf',
-  June: '/iva-dashboard/reports/iva-june-2026.pdf',
-}
+
 const reportUrl = (month: MonthName) =>
   `/iva-dashboard/reports/iva-${month.toLowerCase()}-2026.pdf`
 
@@ -193,13 +186,15 @@ const [selectedMonth, setSelectedMonth] = useState<MonthName>(latestMonth)
       ],
     }],
   }), [data])
-
+const sortedCountries = [...data.countries].sort(
+  (a, b) => b.share - a.share
+)
   const countryOptions = useMemo<Highcharts.Options>(() => ({
     chart: { type: 'bar', backgroundColor: 'transparent', height: 440, spacingLeft: 8, spacingRight: 12 },
     title: { text: undefined },
     credits: { enabled: false },
     xAxis: {
-      categories: data.countries.map((d) => d.name),
+      categories: sortedCountries.map((d) => d.name),
       title: { text: undefined },
       lineWidth: 0,
       tickWidth: 0,
