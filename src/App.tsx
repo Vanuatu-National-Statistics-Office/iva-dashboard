@@ -33,6 +33,8 @@ const REPORT_URLS: Record<MonthName, string> = {
   May: '/iva-dashboard/reports/iva-may-2026.pdf',
   June: '/iva-dashboard/reports/iva-june-2026.pdf',
 }
+const reportUrl = (month: MonthName) =>
+  `/iva-dashboard/reports/iva-${month.toLowerCase()}-2026.pdf`
 
 const COLORS = {
   teal: '#2f8799',
@@ -149,7 +151,8 @@ function selectedMonthRows(data: MonthData): Array<Array<string | number>> {
 }
 
 export default function App() {
-  const [selectedMonth, setSelectedMonth] = useState<MonthName>('June')
+  const latestMonth = monthOrder[monthOrder.length - 1]
+const [selectedMonth, setSelectedMonth] = useState<MonthName>(latestMonth)
   const data = iva2026[selectedMonth]
   const monthIndex = monthOrder.indexOf(selectedMonth)
   const previousMonth = monthIndex > 0 ? monthOrder[monthIndex - 1] : null
@@ -374,7 +377,10 @@ export default function App() {
         ]
       }),
     ]
-    downloadCsv('vanuatu-iva-jan-jun-2026.csv', rows)
+    downloadCsv(
+  `vanuatu-iva-jan-${latestMonth.slice(0, 3).toLowerCase()}-2026.csv`,
+  rows
+)
   }
 
   const downloadSelectedMonth = () => {
@@ -474,7 +480,7 @@ export default function App() {
           <div className="toolbar-actions">
             <a
               className="action-button secondary"
-              href={REPORT_URLS[selectedMonth]}
+              href={reportUrl(selectedMonth)}
               target="_blank"
               rel="noreferrer"
             >
@@ -534,7 +540,9 @@ export default function App() {
         <section className="panel trend-panel">
           <div className="panel-heading">
             <div>
-              <span className="section-kicker">JANUARY–JUNE 2026</span>
+              <span className="section-kicker">
+  JANUARY–{latestMonth.toUpperCase()} 2026
+</span>
               <h2>Monthly Visitor Arrivals Trend</h2>
               <p className="panel-description">Total, air and sea visitor arrivals. The gold marker shows the selected reporting month.</p>
             </div>
@@ -612,12 +620,14 @@ export default function App() {
           <div className="panel-heading data-heading">
             <div>
               <span className="section-kicker">DATA & DOWNLOADS</span>
-              <h2>January–June 2026 Monthly Data</h2>
+              <h2>
+  January–{latestMonth} 2026 Monthly Data
+</h2>
               <p className="panel-description">Use the table for quick checks or download the dashboard data as CSV.</p>
             </div>
             <div className="data-actions">
               <button type="button" className="action-button" onClick={downloadAllMonths}>
-                <Database size={16} /> Download Jan–Jun CSV
+                <Database size={16} /> Download Jan–{latestMonth.slice(0, 3)} CSV
               </button>
               <button type="button" className="action-button secondary" onClick={downloadSelectedMonth}>
                 <Download size={16} /> {selectedMonth} detail CSV

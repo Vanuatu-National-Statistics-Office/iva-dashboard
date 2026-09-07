@@ -1,3 +1,7 @@
+// AUTO-GENERATED FILE — DO NOT EDIT MONTHLY FIGURES BY HAND.
+// Generated from: Jun 2026.xlsx
+// Run: python scripts/update_iva.py
+
 export type ShareItem = {
   name: string
   count: number
@@ -22,12 +26,15 @@ export type MonthData = {
   visitorDeparturePercent: number
   countries: ShareItem[]
   purposes: ShareItem[]
+  reportFile: string
 }
 
 export const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June'] as const
 export type MonthName = (typeof monthOrder)[number]
+export const latestMonth: MonthName = 'June'
+export const periodLabel = 'January–June 2026'
 
-export const iva2026: Record<string, MonthData> = {
+export const iva2026: Record<MonthName, MonthData> = {
   January: {
     year: 2026,
     month: 'January',
@@ -62,6 +69,7 @@ export const iva2026: Record<string, MonthData> = {
       { name: 'Business', count: 297, share: 3.075489282385834 },
       { name: 'Stop-over', count: 28, share: 0.28994511753132446 },
     ],
+    reportFile: 'iva-january-2026.pdf',
   },
   February: {
     year: 2026,
@@ -83,20 +91,21 @@ export const iva2026: Record<string, MonthData> = {
       { name: 'Australia', count: 2418, share: 47.74881516587678 },
       { name: 'Europe', count: 707, share: 13.96129541864139 },
       { name: 'Other Pacific Island Countries', count: 427, share: 8.432069510268562 },
-      { name: 'China', count: 406, share: 8.017377567140601 },
-      { name: 'New Zealand', count: 310, share: 6.121642969984202 },
       { name: 'Other Countries', count: 310, share: 6.121642969984202 },
-      { name: 'North America', count: 242, share: 4.778830963665087 },
+      { name: 'New Zealand', count: 310, share: 6.121642969984202 },
+      { name: 'China', count: 406, share: 8.017377567140601 },
       { name: 'New Caledonia', count: 177, share: 3.495260663507109 },
+      { name: 'North America', count: 242, share: 4.778830963665087 },
       { name: 'Japan', count: 67, share: 1.3230647709320695 },
     ],
     purposes: [
       { name: 'Holiday', count: 3290, share: 64.96840442338072 },
       { name: 'Other', count: 1006, share: 19.865718799368086 },
-      { name: 'Business', count: 404, share: 7.977883096366509 },
       { name: 'Visiting Friends & Relatives', count: 338, share: 6.6745655608214856 },
+      { name: 'Business', count: 404, share: 7.977883096366509 },
       { name: 'Stop-over', count: 26, share: 0.5134281200631912 },
     ],
+    reportFile: 'iva-february-2026.pdf',
   },
   March: {
     year: 2026,
@@ -118,20 +127,21 @@ export const iva2026: Record<string, MonthData> = {
       { name: 'Australia', count: 4128, share: 57.92058369580468 },
       { name: 'Europe', count: 751, share: 10.537393012487723 },
       { name: 'Other Pacific Island Countries', count: 539, share: 7.562789392451242 },
-      { name: 'China', count: 497, share: 6.973481128104392 },
-      { name: 'New Zealand', count: 469, share: 6.580608951873159 },
       { name: 'Other Countries', count: 335, share: 4.700434965623685 },
+      { name: 'New Zealand', count: 469, share: 6.580608951873159 },
+      { name: 'China', count: 497, share: 6.973481128104392 },
+      { name: 'New Caledonia', count: 82, share: 1.150554230391469 },
       { name: 'North America', count: 215, share: 3.0166970674898272 },
       { name: 'Japan', count: 111, share: 1.557457555773818 },
-      { name: 'New Caledonia', count: 82, share: 1.150554230391469 },
     ],
     purposes: [
       { name: 'Holiday', count: 5075, share: 71.20808194191103 },
       { name: 'Other', count: 1114, share: 15.630700154342641 },
-      { name: 'Business', count: 507, share: 7.113792619615547 },
       { name: 'Visiting Friends & Relatives', count: 409, share: 5.73874000280623 },
+      { name: 'Business', count: 507, share: 7.113792619615547 },
       { name: 'Stop-over', count: 22, share: 0.3086852813245405 },
     ],
+    reportFile: 'iva-march-2026.pdf',
   },
   April: {
     year: 2026,
@@ -152,11 +162,11 @@ export const iva2026: Record<string, MonthData> = {
     countries: [
       { name: 'Australia', count: 6336, share: 63.73604265164471 },
       { name: 'Europe', count: 900, share: 9.05341514938135 },
+      { name: 'Other Pacific Island Countries', count: 410, share: 4.124333568051504 },
+      { name: 'Other Countries', count: 353, share: 3.550950608590685 },
       { name: 'New Zealand', count: 689, share: 6.930892264359723 },
       { name: 'China', count: 526, share: 5.2912181873051 },
-      { name: 'Other Pacific Island Countries', count: 410, share: 4.124333568051504 },
       { name: 'New Caledonia', count: 379, share: 3.812493712906146 },
-      { name: 'Other Countries', count: 353, share: 3.550950608590685 },
       { name: 'North America', count: 266, share: 2.675787144150488 },
       { name: 'Japan', count: 82, share: 0.8248667136103008 },
     ],
@@ -167,6 +177,7 @@ export const iva2026: Record<string, MonthData> = {
       { name: 'Business', count: 395, share: 3.973443315561815 },
       { name: 'Stop-over', count: 39, share: 0.3923146564731918 },
     ],
+    reportFile: 'iva-april-2026.pdf',
   },
   May: {
     year: 2026,
@@ -186,22 +197,23 @@ export const iva2026: Record<string, MonthData> = {
     visitorDeparturePercent: 71.30744446328642,
     countries: [
       { name: 'Australia', count: 5416, share: 60.459924090198705 },
-      { name: 'New Zealand', count: 766, share: 8.551015851752624 },
       { name: 'Europe', count: 680, share: 7.590980129493191 },
-      { name: 'China', count: 535, share: 5.972315248939496 },
       { name: 'Other Pacific Island Countries', count: 524, share: 5.849519982138871 },
       { name: 'Other Countries', count: 408, share: 4.554588077695914 },
-      { name: 'North America', count: 361, share: 4.0299173922750615 },
+      { name: 'New Zealand', count: 766, share: 8.551015851752624 },
+      { name: 'China', count: 535, share: 5.972315248939496 },
       { name: 'New Caledonia', count: 170, share: 1.8977450323732978 },
+      { name: 'North America', count: 361, share: 4.0299173922750615 },
       { name: 'Japan', count: 98, share: 1.0939941951328422 },
     ],
     purposes: [
       { name: 'Holiday', count: 6839, share: 76.34516633177049 },
       { name: 'Other', count: 1127, share: 12.580933244027683 },
-      { name: 'Business', count: 497, share: 5.548113418173699 },
       { name: 'Visiting Friends & Relatives', count: 476, share: 5.313686090645233 },
+      { name: 'Business', count: 497, share: 5.548113418173699 },
       { name: 'Stop-over', count: 19, share: 0.21210091538289796 },
     ],
+    reportFile: 'iva-may-2026.pdf',
   },
   June: {
     year: 2026,
@@ -221,21 +233,22 @@ export const iva2026: Record<string, MonthData> = {
     visitorDeparturePercent: 81.95345892037359,
     countries: [
       { name: 'Australia', count: 7050, share: 63.04211749977645 },
-      { name: 'New Zealand', count: 891, share: 7.967450594652598 },
       { name: 'Europe', count: 689, share: 6.161137440758294 },
       { name: 'Other Pacific Island Countries', count: 623, share: 5.570955915228472 },
-      { name: 'China', count: 613, share: 5.481534471966378 },
       { name: 'Other Countries', count: 490, share: 4.381650719842618 },
-      { name: 'North America', count: 475, share: 4.247518554949477 },
+      { name: 'New Zealand', count: 891, share: 7.967450594652598 },
+      { name: 'China', count: 613, share: 5.481534471966378 },
       { name: 'New Caledonia', count: 259, share: 2.316015380488241 },
+      { name: 'North America', count: 475, share: 4.247518554949477 },
       { name: 'Japan', count: 93, share: 0.8316194223374765 },
     ],
     purposes: [
       { name: 'Holiday', count: 8868, share: 79.29893588482518 },
       { name: 'Other', count: 1230, share: 10.998837521237592 },
-      { name: 'Business', count: 566, share: 5.061253688634534 },
       { name: 'Visiting Friends & Relatives', count: 490, share: 4.381650719842618 },
+      { name: 'Business', count: 566, share: 5.061253688634534 },
       { name: 'Stop-over', count: 29, share: 0.2593221854600733 },
     ],
+    reportFile: 'iva-june-2026.pdf',
   },
 }

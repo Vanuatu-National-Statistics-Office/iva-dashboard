@@ -22,11 +22,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Python dependencies
+        run: python -m pip install openpyxl
+      - name: Generate IVA dashboard data
+        run: python scripts/update_iva.py --source-dir source-data/2026 --output src/data.ts --year 2026
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
 
       - name: Install dependencies
         run: npm install
