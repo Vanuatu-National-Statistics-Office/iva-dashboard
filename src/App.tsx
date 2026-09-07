@@ -225,7 +225,7 @@ const sortedCountries = [...data.countries].sort(
     series: [{
       type: 'bar',
       name: 'Share',
-      data: data.countries.map((d, index) => ({
+      data: sortedCountries.map((d, index) => ({
         y: d.share,
         color: index === 0 ? COLORS.tealDark : index < 3 ? COLORS.teal : COLORS.aqua,
       })),
