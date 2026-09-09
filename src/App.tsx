@@ -202,16 +202,17 @@ window.alert(
 }
   const data = iva2026[selectedMonth]
   const monthIndex = monthOrder.indexOf(selectedMonth)
-  const previousMonth = monthIndex > 0 ? monthOrder[monthIndex - 1] : null
-  const previous = previousMonth ? iva2026[previousMonth] : null
-  const comparisonLabel = previousMonth ? `vs ${previousMonth.slice(0, 3)}` : 'first month'
+  const prior = data.priorYear
+  const comparisonLabel = prior
+    ? `vs ${selectedMonth.slice(0, 3)} ${prior.year}`
+    : 'no prior year'
 
-  const totalChange = previous ? percentChange(data.totalArrivals, previous.totalArrivals) : null
-  const airChange = previous ? percentChange(data.airArrivals, previous.airArrivals) : null
-  const seaChange = previous ? percentChange(data.seaArrivals, previous.seaArrivals) : null
-  const departureChange = previous ? percentChange(data.totalDepartures, previous.totalDepartures) : null
-  const stayChange = previous ? data.averageStay - previous.averageStay : null
-  const ageChange = previous ? data.averageAge - previous.averageAge : null
+  const totalChange = prior ? percentChange(data.totalArrivals, prior.totalArrivals) : null
+  const airChange = prior ? percentChange(data.airArrivals, prior.airArrivals) : null
+  const seaChange = prior ? percentChange(data.seaArrivals, prior.seaArrivals) : null
+  const departureChange = prior ? percentChange(data.totalDepartures, prior.totalDepartures) : null
+  const stayChange = prior ? data.averageStay - prior.averageStay : null
+  const ageChange = prior ? data.averageAge - prior.averageAge : null
 
   const modeOptions = useMemo<Highcharts.Options>(() => ({
     chart: { type: 'pie', backgroundColor: 'transparent', height: 310, spacing: [5, 5, 5, 5] },

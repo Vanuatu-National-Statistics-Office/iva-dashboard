@@ -8,6 +8,16 @@ export type ShareItem = {
   share: number
 }
 
+export type PriorYearKpis = {
+  year: number
+  totalArrivals: number
+  airArrivals: number
+  seaArrivals: number
+  averageStay: number
+  averageAge: number
+  totalDepartures: number
+}
+
 export type MonthData = {
   year: number
   month: string
@@ -27,6 +37,8 @@ export type MonthData = {
   countries: ShareItem[]
   purposes: ShareItem[]
   reportFile: string
+  /** Same-month KPIs from the previous calendar year (for YoY growth). */
+  priorYear?: PriorYearKpis
 }
 
 export const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June'] as const
@@ -69,6 +81,15 @@ export const iva2026: Record<MonthName, MonthData> = {
       { name: 'Business', count: 297, share: 3.075489282385834 },
       { name: 'Stop-over', count: 28, share: 0.28994511753132446 },
     ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 19366,
+      airArrivals: 6725,
+      seaArrivals: 12641,
+      averageStay: 10.433369183101904,
+      averageAge: 38.771929252965094,
+      totalDepartures: 10498,
+    },
     reportFile: 'iva-january-2026.pdf',
   },
   February: {
@@ -105,6 +126,15 @@ export const iva2026: Record<MonthName, MonthData> = {
       { name: 'Business', count: 404, share: 7.977883096366509 },
       { name: 'Stop-over', count: 26, share: 0.5134281200631912 },
     ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 23313,
+      airArrivals: 4365,
+      seaArrivals: 18948,
+      averageStay: 9.523886094217335,
+      averageAge: 42.35231019822207,
+      totalDepartures: 7869,
+    },
     reportFile: 'iva-february-2026.pdf',
   },
   March: {
@@ -141,6 +171,15 @@ export const iva2026: Record<MonthName, MonthData> = {
       { name: 'Business', count: 507, share: 7.113792619615547 },
       { name: 'Stop-over', count: 22, share: 0.3086852813245405 },
     ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 22351,
+      airArrivals: 5264,
+      seaArrivals: 17087,
+      averageStay: 8.649765948677684,
+      averageAge: 50.4909057706355,
+      totalDepartures: 8994,
+    },
     reportFile: 'iva-march-2026.pdf',
   },
   April: {
@@ -177,6 +216,15 @@ export const iva2026: Record<MonthName, MonthData> = {
       { name: 'Business', count: 395, share: 3.973443315561815 },
       { name: 'Stop-over', count: 39, share: 0.3923146564731918 },
     ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 26573,
+      airArrivals: 8009,
+      seaArrivals: 18564,
+      averageStay: 8.447153284671533,
+      averageAge: 37.273968860966946,
+      totalDepartures: 10508,
+    },
     reportFile: 'iva-april-2026.pdf',
   },
   May: {
@@ -213,6 +261,15 @@ export const iva2026: Record<MonthName, MonthData> = {
       { name: 'Business', count: 497, share: 5.548113418173699 },
       { name: 'Stop-over', count: 19, share: 0.21210091538289796 },
     ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 10350,
+      airArrivals: 7103,
+      seaArrivals: 3247,
+      averageStay: 7.834883604,
+      averageAge: 41.94734619,
+      totalDepartures: 10302,
+    },
     reportFile: 'iva-may-2026.pdf',
   },
   June: {
@@ -249,6 +306,15 @@ export const iva2026: Record<MonthName, MonthData> = {
       { name: 'Business', count: 566, share: 5.061253688634534 },
       { name: 'Stop-over', count: 29, share: 0.2593221854600733 },
     ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 15214,
+      airArrivals: 8365,
+      seaArrivals: 6849,
+      averageStay: 8.510491299897646,
+      averageAge: 38.95218170950388,
+      totalDepartures: 10109,
+    },
     reportFile: 'iva-june-2026.pdf',
   },
 }

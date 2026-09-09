@@ -123,6 +123,16 @@ def integer(value: object, *, field: str) -> int:
     return rounded
 
 
+def optional_count(value: object, *, field: str) -> int:
+    """Treat blank / dash / NA as zero (common in historical yacht/cruise columns)."""
+    if value is None:
+        return 0
+    text = str(value).strip()
+    if text.lower() in {"", "-", "na", "n/a", "#n/a"}:
+        return 0
+    return integer(value, field=field)
+
+
 @dataclass
 class SheetData:
     rows: Dict[int, Dict[int, str]]
@@ -355,6 +365,69 @@ def extract_year(path: Path, year: int) -> Dict[str, dict]:
     return result
 
 
+def extract_prior_year_kpis(path: Path, year: int, months: Iterable[str]) -> Dict[str, dict]:
+    """Extract headline KPIs for the same months in the previous calendar year.
+
+    Used for year-over-year growth badges (same month, prior year), which avoids
+    seasonality distortion from month-over-month comparisons.
+    """
+    month_list = list(months)
+    if not month_list:
+        return {}
+
+    with XlsxCachedReader(path) as book:
+        summary = book.read_sheet(REQUIRED_SHEETS["summary"])
+        stay = book.read_sheet(REQUIRED_SHEETS["stay"])
+        age = book.read_sheet(REQUIRED_SHEETS["age"])
+
+    summary_rows = year_month_rows(summary, year=year, year_col=2, month_col=3)
+    stay_rows = year_month_rows(stay, year=year, year_col=2, month_col=3)
+    age_rows = year_month_rows(age, year=year, year_col=2, month_col=4)
+
+    result: Dict[str, dict] = {}
+    for month in month_list:
+        if month not in summary_rows:
+            continue
+        if month not in stay_rows or month not in age_rows:
+            raise IVAError(f"{month} {year}: prior-year stay/age row missing")
+
+        summary_row, _ = summary_rows[month]
+        stay_row, _ = stay_rows[month]
+        age_row, _ = age_rows[month]
+
+        air = integer(summary.get(summary_row, 14), field=f"{month} {year} air visitors")
+        yacht = optional_count(summary.get(summary_row, 26), field=f"{month} {year} yacht visitors")
+        cruise = optional_count(summary.get(summary_row, 28), field=f"{month} {year} cruise visitors")
+        sea = yacht + cruise
+        total = air + sea
+
+        resident_departures = optional_count(
+            summary.get(summary_row, 22), field=f"{month} {year} resident departures"
+        )
+        visitor_departures = optional_count(
+            summary.get(summary_row, 24), field=f"{month} {year} visitor departures"
+        )
+        total_departures = resident_departures + visitor_departures
+
+        average_stay = number(stay.get(stay_row, 8), field=f"{month} {year} average stay")
+        average_age = number(age.get(age_row, 9), field=f"{month} {year} average age")
+
+        if total <= 0 or air <= 0:
+            raise IVAError(f"{month} {year}: prior-year arrival totals are zero/negative")
+
+        result[month] = {
+            "year": year,
+            "totalArrivals": total,
+            "airArrivals": air,
+            "seaArrivals": sea,
+            "averageStay": average_stay,
+            "averageAge": average_age,
+            "totalDepartures": total_departures,
+        }
+
+    return result
+
+
 def ts_number(value: float | int) -> str:
     if isinstance(value, int):
         return str(value)
@@ -381,6 +454,16 @@ def write_data_ts(data: Mapping[str, dict], output: Path, source_name: str, year
         "  share: number",
         "}",
         "",
+        "export type PriorYearKpis = {",
+        "  year: number",
+        "  totalArrivals: number",
+        "  airArrivals: number",
+        "  seaArrivals: number",
+        "  averageStay: number",
+        "  averageAge: number",
+        "  totalDepartures: number",
+        "}",
+        "",
         "export type MonthData = {",
         "  year: number",
         "  month: string",
@@ -400,6 +483,8 @@ def write_data_ts(data: Mapping[str, dict], output: Path, source_name: str, year
         "  countries: ShareItem[]",
         "  purposes: ShareItem[]",
         "  reportFile: string",
+        "  /** Same-month KPIs from the previous calendar year (for YoY growth). */",
+        "  priorYear?: PriorYearKpis",
         "}",
         "",
         "export const monthOrder = [" + ", ".join(ts_string(m) for m in months) + "] as const",
@@ -440,8 +525,21 @@ def write_data_ts(data: Mapping[str, dict], output: Path, source_name: str, year
             lines.append(
                 f"      {{ name: {ts_string(x['name'])}, count: {x['count']}, share: {ts_number(x['share'])} }},"
             )
+        lines.append("    ],")
+        prior = item.get("priorYear")
+        if prior:
+            lines.extend([
+                "    priorYear: {",
+                f"      year: {prior['year']},",
+                f"      totalArrivals: {prior['totalArrivals']},",
+                f"      airArrivals: {prior['airArrivals']},",
+                f"      seaArrivals: {prior['seaArrivals']},",
+                f"      averageStay: {ts_number(prior['averageStay'])},",
+                f"      averageAge: {ts_number(prior['averageAge'])},",
+                f"      totalDepartures: {prior['totalDepartures']},",
+                "    },",
+            ])
         lines.extend([
-            "    ],",
             f"    reportFile: {ts_string(item['reportFile'])},",
             "  },",
         ])
@@ -464,6 +562,11 @@ def main() -> int:
     try:
         workbook, detected_months = select_latest_workbook(source_dir, args.year)
         data = extract_year(workbook, args.year)
+        prior_year = args.year - 1
+        prior = extract_prior_year_kpis(workbook, prior_year, data.keys())
+        for month, kpis in prior.items():
+            data[month]["priorYear"] = kpis
+        missing_prior = [m for m in data if m not in prior]
         write_data_ts(data, output, workbook.name, args.year)
     except IVAError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
@@ -480,6 +583,9 @@ def main() -> int:
         f"air={latest_data['airArrivals']:,}, sea={latest_data['seaArrivals']:,}, "
         f"departures={latest_data['totalDepartures']:,}"
     )
+    print(f"Prior-year KPIs ({prior_year}): {', '.join(sorted(prior, key=MONTH_INDEX.get)) or 'none'}")
+    if missing_prior:
+        print(f"WARNING: no prior-year KPIs for: {', '.join(missing_prior)}")
     print(f"Wrote: {output}")
     return 0
 
