@@ -13,6 +13,7 @@ stored in the .xlsx (OOXML) file directly.
 from __future__ import annotations
 
 import argparse
+import json
 import math
 import re
 import sys
@@ -550,15 +551,34 @@ def write_data_ts(data: Mapping[str, dict], output: Path, source_name: str, year
     output.write_text("\n".join(lines), encoding="utf-8")
 
 
+def write_data_json(data: Mapping[str, dict], output: Path, source_name: str, year: int) -> None:
+    months = sorted(data, key=MONTH_INDEX.get)
+    if not months:
+        raise IVAError("No months extracted")
+
+    payload = {
+        "generatedFrom": source_name,
+        "year": year,
+        "monthOrder": months,
+        "latestMonth": months[-1],
+        "periodLabel": f"{months[0]}–{months[-1]} {year}",
+        "months": {month: data[month] for month in months},
+    }
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Generate IVA dashboard data.ts from the latest Excel release")
     parser.add_argument("--source-dir", default="source-data/2026", help="Folder containing IVA xlsx releases")
     parser.add_argument("--output", default="src/data.ts", help="TypeScript output path")
+    parser.add_argument("--json-output", default="server/data/iva.json", help="JSON API data output path")
     parser.add_argument("--year", type=int, default=2026)
     args = parser.parse_args()
 
     source_dir = Path(args.source_dir)
     output = Path(args.output)
+    json_output = Path(args.json_output)
     try:
         workbook, detected_months = select_latest_workbook(source_dir, args.year)
         data = extract_year(workbook, args.year)
@@ -568,6 +588,7 @@ def main() -> int:
             data[month]["priorYear"] = kpis
         missing_prior = [m for m in data if m not in prior]
         write_data_ts(data, output, workbook.name, args.year)
+        write_data_json(data, json_output, workbook.name, args.year)
     except IVAError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1
@@ -587,6 +608,7 @@ def main() -> int:
     if missing_prior:
         print(f"WARNING: no prior-year KPIs for: {', '.join(missing_prior)}")
     print(f"Wrote: {output}")
+    print(f"Wrote: {json_output}")
     return 0
 
 

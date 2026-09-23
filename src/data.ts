@@ -1,5 +1,5 @@
 // AUTO-GENERATED FILE — DO NOT EDIT MONTHLY FIGURES BY HAND.
-// Generated from: Jun 2026.xlsx
+// Generated from: Aug 2026 .xlsx
 // Run: python scripts/update_iva.py
 
 export type ShareItem = {
@@ -41,10 +41,10 @@ export type MonthData = {
   priorYear?: PriorYearKpis
 }
 
-export const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June'] as const
+export const monthOrder = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August'] as const
 export type MonthName = (typeof monthOrder)[number]
-export const latestMonth: MonthName = 'June'
-export const periodLabel = 'January–June 2026'
+export const latestMonth: MonthName = 'August'
+export const periodLabel = 'January–August 2026'
 
 export const iva2026: Record<MonthName, MonthData> = {
   January: {
@@ -316,5 +316,95 @@ export const iva2026: Record<MonthName, MonthData> = {
       totalDepartures: 10109,
     },
     reportFile: 'iva-june-2026.pdf',
+  },
+  July: {
+    year: 2026,
+    month: 'July',
+    provisional: true,
+    totalArrivals: 25624,
+    airArrivals: 12144,
+    seaArrivals: 13480,
+    airPercent: 47.393068997814545,
+    seaPercent: 52.606931002185455,
+    averageStay: 11.27308996324555,
+    averageAge: 39.445879659908435,
+    totalDepartures: 15346,
+    residentDepartures: 2512,
+    visitorDepartures: 12834,
+    residentDeparturePercent: 16.369086406881273,
+    visitorDeparturePercent: 83.63091359311873,
+    countries: [
+      { name: 'Australia', count: 7184, share: 59.15678524374176 },
+      { name: 'Europe', count: 952, share: 7.8392621870882735 },
+      { name: 'Other Pacific Island Countries', count: 632, share: 5.204216073781291 },
+      { name: 'Other Countries', count: 386, share: 3.178524374176548 },
+      { name: 'New Zealand', count: 1613, share: 13.28227931488801 },
+      { name: 'China', count: 647, share: 5.327733860342556 },
+      { name: 'New Caledonia', count: 123, share: 1.0128458498023716 },
+      { name: 'North America', count: 522, share: 4.298418972332016 },
+      { name: 'Japan', count: 85, share: 0.6999341238471674 },
+    ],
+    purposes: [
+      { name: 'Holiday', count: 9828, share: 80.9288537549407 },
+      { name: 'Other', count: 1085, share: 8.93445322793149 },
+      { name: 'Visiting Friends & Relatives', count: 765, share: 6.299407114624506 },
+      { name: 'Business', count: 368, share: 3.0303030303030303 },
+      { name: 'Stop-over', count: 98, share: 0.8069828722002635 },
+    ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 24668,
+      airArrivals: 10382,
+      seaArrivals: 14286,
+      averageStay: 8.56891435587844,
+      averageAge: 38.085340011558465,
+      totalDepartures: 12759,
+    },
+    reportFile: 'iva-july-2026.pdf',
+  },
+  August: {
+    year: 2026,
+    month: 'August',
+    provisional: true,
+    totalArrivals: 22943,
+    airArrivals: 11106,
+    seaArrivals: 11837,
+    airPercent: 48.40692150111145,
+    seaPercent: 51.593078498888545,
+    averageStay: 10.566486248845557,
+    averageAge: 43.51354240912331,
+    totalDepartures: 14108,
+    residentDepartures: 2635,
+    visitorDepartures: 11473,
+    residentDeparturePercent: 18.67734618656082,
+    visitorDeparturePercent: 81.32265381343919,
+    countries: [
+      { name: 'Australia', count: 5978, share: 53.82676030974248 },
+      { name: 'Europe', count: 1126, share: 10.138663785341256 },
+      { name: 'Other Pacific Island Countries', count: 535, share: 4.817215919322888 },
+      { name: 'Other Countries', count: 446, share: 4.015847289753287 },
+      { name: 'New Zealand', count: 1597, share: 14.379614622726455 },
+      { name: 'China', count: 674, share: 6.068791644156312 },
+      { name: 'New Caledonia', count: 214, share: 1.9268863677291552 },
+      { name: 'North America', count: 368, share: 3.3135242211417255 },
+      { name: 'Japan', count: 168, share: 1.5126958400864399 },
+    ],
+    purposes: [
+      { name: 'Holiday', count: 8838, share: 79.57860615883307 },
+      { name: 'Other', count: 1167, share: 10.507833603457591 },
+      { name: 'Visiting Friends & Relatives', count: 574, share: 5.168377453628669 },
+      { name: 'Business', count: 504, share: 4.538087520259319 },
+      { name: 'Stop-over', count: 23, share: 0.20709526382135784 },
+    ],
+    priorYear: {
+      year: 2025,
+      totalArrivals: 28421,
+      airArrivals: 9231,
+      seaArrivals: 19190,
+      averageStay: 7.9974007561436675,
+      averageAge: 42.49875419781172,
+      totalDepartures: 12617,
+    },
+    reportFile: 'iva-august-2026.pdf',
   },
 }
