@@ -773,7 +773,26 @@ const sortedCountries = [...data.countries].sort(
             </div>
           </article>
         </section>
+<section className="panel source-revisions">
+  <h3>DATA SOURCE AND REVISIONS</h3>
 
+  <p>
+    All international arrivals by air provided in this dashboard are sourced
+    from the passenger processing modules within the ASYCUDA World system from
+    the Department of Customs and the Migration Information Data Analysis
+    System (MIDAS) from the Department of Immigration through the International
+    Organization for Migration (IOM). Cruise ship figures are also supplied by
+    the Department of Customs through the passenger processing module.
+  </p>
+
+  <p>
+    The Vanuatu Bureau of Statistics releases monthly provisional international
+    visitor arrivals. This allows for anomalies and consistency checks with the
+    Department of Customs and Inland Revenue (DCIR) and the Immigration
+    Department before the release of actual figures in the Quarterly or Annual
+    Statistical Indicator report.
+  </p>
+</section>
         <footer>
           <div>
             <strong>Vanuatu Bureau of Statistics</strong>
