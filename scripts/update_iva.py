@@ -11,7 +11,7 @@ stored in the .xlsx (OOXML) file directly.
 """
 
 from __future__ import annotations
-
+import shutil
 import argparse
 import json
 import math
@@ -589,6 +589,12 @@ def main() -> int:
         missing_prior = [m for m in data if m not in prior]
         write_data_ts(data, output, workbook.name, args.year)
         write_data_json(data, json_output, workbook.name, args.year)
+        downloads_dir = Path("public/downloads")       
+        downloads_dir.mkdir(parents=True, exist_ok=True)
+
+        for excel_file in source_dir.glob("*.xlsx"):
+            if not excel_file.name.startswith("~$"):
+                shutil.copy2(excel_file, downloads_dir / excel_file.name)
     except IVAError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

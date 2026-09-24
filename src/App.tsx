@@ -682,17 +682,21 @@ const sortedCountries = [...data.countries].sort(
               <h2>
   January–{latestMonth} 2026 Monthly Data
 </h2>
-              <p className="panel-description">Use the table for quick checks or download the dashboard data as CSV.</p>
+              <p className="panel-description">
+  Use the table for quick checks or download the original Excel release.
+</p>
             </div>
             <div className="data-actions">
-              <button type="button" className="action-button" onClick={downloadAllMonths}>
-                <Database size={16} /> Download Jan–{latestMonth.slice(0, 3)} CSV
-              </button>
-              <button type="button" className="action-button secondary" onClick={downloadSelectedMonth}>
-                <Download size={16} /> {selectedMonth} detail CSV
-              </button>
+  <a
+    className="action-button"
+    href={`/iva-dashboard/downloads/${selectedMonth.slice(0, 3)} 2026.xlsx`}
+    download
+  >
+    <Download size={16} /> Download {selectedMonth} 2026 Excel
+  </a>
+</div>
             </div>
-          </div>
+          
 
           <div className="table-wrap">
             <table className="data-table">
