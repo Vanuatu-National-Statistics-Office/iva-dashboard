@@ -796,7 +796,9 @@ const sortedCountries = [...data.countries].sort(
         <footer>
           <div>
             <strong>Vanuatu Bureau of Statistics</strong>
-            <span>International Visitor Arrivals Dashboard · January–June 2026</span>
+            <span>
+  International Visitor Arrivals Dashboard · January–{latestMonth} 2026
+</span>
           </div>
           <a href="https://vbos.gov.vu" target="_blank" rel="noreferrer">vbos.gov.vu <ExternalLink size={13} /></a>
         </footer>
