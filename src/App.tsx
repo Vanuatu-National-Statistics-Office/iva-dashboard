@@ -399,9 +399,9 @@ const sortedCountries = [...data.countries].sort(
       },
     },
     series: [
-      { type: 'spline', name: 'Total arrivals', data: monthOrder.map((m) => iva2026[m].totalArrivals) },
-      { type: 'spline', name: 'Air arrivals', data: monthOrder.map((m) => iva2026[m].airArrivals) },
-      { type: 'spline', name: 'Sea arrivals', data: monthOrder.map((m) => iva2026[m].seaArrivals) },
+      { type: 'spline', name: 'Total visitor arrivals', data: monthOrder.map((m) => iva2026[m].totalArrivals) },
+      { type: 'spline', name: 'Air visitor arrivals', data: monthOrder.map((m) => iva2026[m].airArrivals) },
+      { type: 'spline', name: 'Sea visitor arrivals', data: monthOrder.map((m) => iva2026[m].seaArrivals) },
     ],
   }), [monthIndex, selectedMonth])
 
@@ -560,16 +560,16 @@ const sortedCountries = [...data.countries].sort(
             icon={<Users size={24} />}
           />
           <KpiCard
-            title="Air Arrivals"
+            title="Air Visitor Arrivals"
             value={number.format(data.airArrivals)}
-            subtitle={`${pct(data.airPercent)} of arrivals`}
+            subtitle={`${pct(data.airPercent)} of visitor arrivals`}
             comparison={airChange === null ? null : { value: airChange, label: comparisonLabel }}
             icon={<Plane size={24} />}
           />
           <KpiCard
-            title="Sea Arrivals"
+            title="Sea Visitor Arrivals"
             value={number.format(data.seaArrivals)}
-            subtitle={`${pct(data.seaPercent)} of arrivals`}
+            subtitle={`${pct(data.seaPercent)} of visitor arrivals`}
             comparison={seaChange === null ? null : { value: seaChange, label: comparisonLabel }}
             icon={<Ship size={24} />}
           />
@@ -663,9 +663,9 @@ const sortedCountries = [...data.countries].sort(
             <span className="section-kicker">{data.month.toUpperCase()} 2026 SNAPSHOT</span>
             <h2>Visitor Summary</h2>
             <div className="summary-list">
-              <div><span>Total arrivals</span><strong>{number.format(data.totalArrivals)}</strong></div>
-              <div><span>Arriving by sea</span><strong>{pct(data.seaPercent)}</strong></div>
-              <div><span>Arriving by air</span><strong>{pct(data.airPercent)}</strong></div>
+              <div><span>Total visitor arrivals</span><strong>{number.format(data.totalArrivals)}</strong></div>
+              <div><span>Visitors arriving by sea</span><strong>{pct(data.seaPercent)}</strong></div>
+              <div><span>Visitors arriving by air</span><strong>{pct(data.airPercent)}</strong></div>
               <div><span>Holiday visitors</span><strong>{pct(data.purposes.find((d) => d.name === 'Holiday')?.share ?? 0)}</strong></div>
               <div><span>Largest air source market</span><strong>{data.countries[0].name} — {pct(data.countries[0].share)}</strong></div>
               <div><span>Average stay</span><strong>{Math.round(data.averageStay)} days</strong></div>
@@ -703,9 +703,9 @@ const sortedCountries = [...data.countries].sort(
               <thead>
                 <tr>
                   <th>Month</th>
-                  <th>Total arrivals</th>
-                  <th>Air</th>
-                  <th>Sea</th>
+                  <th>Total visitor arrivals</th>
+                  <th>Air visitor arrivals</th>
+                  <th>Sea visitor arrivals</th>
                   <th>Avg stay</th>
                   <th>Avg age</th>
                   <th>Departures</th>
