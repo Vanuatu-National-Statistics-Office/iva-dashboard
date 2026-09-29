@@ -308,7 +308,10 @@ const sortedCountries = [...data.countries].sort(
     series: [{
       type: 'pie',
       name: 'Purpose',
-      data: data.purposes.map((d) => ({ name: d.name, y: d.share })),
+      data: data.purposes.map((d) => ({
+  name: d.name === 'Other' ? 'Other (Education and Sports)' : d.name,
+  y: d.share,
+})),
     }],
   }), [data])
 
@@ -761,7 +764,9 @@ const sortedCountries = [...data.countries].sort(
               {data.purposes.map((item, index) => (
                 <div key={item.name} className="rank-row">
                   <span className="rank-number">{index + 1}</span>
-                  <span className="rank-name">{item.name}</span>
+                  <span className="rank-name">
+                  {item.name === 'Other' ? 'Other (Education and Sports)' : item.name}
+                  </span>
                   <span className="rank-count">{number.format(item.count)}</span>
                   <strong>{item.share.toFixed(1)}%</strong>
                 </div>
