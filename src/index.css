@@ -306,3 +306,165 @@ footer a:hover { text-decoration: underline; }
   margin-top: 14px;
   padding-bottom: 20px;
 }
+/* =========================
+   DARK MODE
+   ========================= */
+
+html[data-theme='dark'] {
+  color-scheme: dark;
+  background: #0f1820;
+}
+
+html[data-theme='dark'] body {
+  background: #0f1820;
+  color: #e8f1f5;
+}
+
+html[data-theme='dark'] .dashboard {
+  background: #0f1820;
+}
+
+html[data-theme='dark'] .toolbar,
+html[data-theme='dark'] .kpi-card,
+html[data-theme='dark'] .panel,
+html[data-theme='dark'] .data-panel,
+html[data-theme='dark'] .compact-panel,
+html[data-theme='dark'] .highlight-panel {
+  background: #172630;
+  border-color: #2d414d;
+  color: #e8f1f5;
+  box-shadow: 0 7px 22px rgba(0, 0, 0, 0.22);
+}
+
+html[data-theme='dark'] .kpi-card h3,
+html[data-theme='dark'] .panel h2,
+html[data-theme='dark'] .panel h3,
+html[data-theme='dark'] .big-number,
+html[data-theme='dark'] strong {
+  color: #f4f8fa;
+}
+
+html[data-theme='dark'] .toolbar-label,
+html[data-theme='dark'] .panel-description,
+html[data-theme='dark'] .source-note,
+html[data-theme='dark'] .kpi-subtitle,
+html[data-theme='dark'] .rounding-note,
+html[data-theme='dark'] .method-note span {
+  color: #9fb3bf;
+}
+
+html[data-theme='dark'] select {
+  background: #20313c;
+  color: #f4f8fa;
+  border-color: #3a5260;
+}
+
+html[data-theme='dark'] .mini-stats > div,
+html[data-theme='dark'] .method-note {
+  background: #20313c;
+  border-color: #324956;
+}
+
+html[data-theme='dark'] .summary-list > div,
+html[data-theme='dark'] .rank-row {
+  border-color: #30434f;
+}
+
+html[data-theme='dark'] .data-table th {
+  background: #20313c;
+  color: #b9cbd4;
+}
+
+html[data-theme='dark'] .data-table td {
+  color: #e1ebef;
+  border-color: #30434f;
+}
+
+html[data-theme='dark'] .data-table tbody tr:hover,
+html[data-theme='dark'] .data-table .selected-row {
+  background: #223944;
+}
+
+html[data-theme='dark'] .theme-toggle {
+  background: #253946;
+  border-color: #496370;
+  color: #f4f8fa;
+}
+
+html[data-theme='dark'] .theme-toggle:hover {
+  background: #304b59;
+}
+
+.theme-toggle {
+  white-space: nowrap;
+}
+/* Dark mode text contrast fixes */
+
+html[data-theme='dark'] .kpi-value,
+html[data-theme='dark'] .kpi-card .value,
+html[data-theme='dark'] .big-number,
+html[data-theme='dark'] .rank-name,
+html[data-theme='dark'] .rank-count,
+html[data-theme='dark'] .summary-list span,
+html[data-theme='dark'] .source-revisions p,
+html[data-theme='dark'] footer,
+html[data-theme='dark'] footer strong {
+  color: #eaf3f7;
+}
+
+html[data-theme='dark'] .kpi-subtitle,
+html[data-theme='dark'] .rank-row span,
+html[data-theme='dark'] .summary-list > div > span,
+html[data-theme='dark'] .source-revisions p,
+html[data-theme='dark'] footer {
+  color: #a9bec9;
+}
+
+html[data-theme='dark'] .rank-row strong,
+html[data-theme='dark'] .summary-list strong {
+  color: #ffffff;
+}
+/* =========================
+   DARK MODE - HIGHCHARTS
+   ========================= */
+
+html[data-theme='dark'] .highcharts-axis-labels text,
+html[data-theme='dark'] .highcharts-axis-title,
+html[data-theme='dark'] .highcharts-legend-item text,
+html[data-theme='dark'] .highcharts-data-label text,
+html[data-theme='dark'] .highcharts-data-label span,
+html[data-theme='dark'] .highcharts-stack-labels text {
+  fill: #b9cbd4 !important;
+  color: #b9cbd4 !important;
+}
+
+html[data-theme='dark'] .highcharts-legend-item:hover text {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+html[data-theme='dark'] .highcharts-data-label text {
+  fill: #eaf3f7 !important;
+  color: #eaf3f7 !important;
+}
+
+html[data-theme='dark'] .highcharts-grid-line {
+  stroke: #40545f !important;
+  opacity: 0.65;
+}
+
+html[data-theme='dark'] .highcharts-axis-line,
+html[data-theme='dark'] .highcharts-tick {
+  stroke: #718894 !important;
+}
+
+/* Departure composition summary boxes */
+html[data-theme='dark'] .departure-counts span {
+  background: #20313c;
+  border-color: #324956;
+  color: #a9bec9;
+}
+
+html[data-theme='dark'] .departure-counts strong {
+  color: #ffffff;
+}

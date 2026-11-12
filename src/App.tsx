@@ -13,9 +13,11 @@ import {
   LogOut,
   MapPin,
   Minus,
+  Moon,
   Plane,
   Printer,
   Ship,
+  Sun,
   TrendingUp,
   UserRound,
   Users,
@@ -150,13 +152,27 @@ function selectedMonthRows(data: MonthData): Array<Array<string | number>> {
   ]
   return rows
 }
-
+type Theme = 'light' | 'dark'
 export default function App() {
   const latestMonth = monthOrder[monthOrder.length - 1]
 const [selectedMonth, setSelectedMonth] = useState<MonthName>(latestMonth)
 const [installPrompt, setInstallPrompt] =
   useState<BeforeInstallPromptEvent | null>(null)
+const [theme, setTheme] = useState<Theme>(() => {
+  const savedTheme = localStorage.getItem('iva-theme')
 
+  if (savedTheme === 'light' || savedTheme === 'dark') {
+    return savedTheme
+  }
+
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light'
+})
+useEffect(() => {
+  document.documentElement.setAttribute('data-theme', theme)
+  localStorage.setItem('iva-theme', theme)
+}, [theme])
 const [showIosInstall, setShowIosInstall] = useState(false)
 const [isMobileDevice, setIsMobileDevice] = useState(false)
 
@@ -536,6 +552,15 @@ const sortedCountries = [...data.countries].sort(
             {data.provisional && <span className="status-badge">Provisional figures</span>}
           </div>
           <div className="toolbar-actions">
+            <button
+  type="button"
+  className="action-button theme-toggle"
+  onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+  title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+>
+  {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+  {theme === 'light' ? 'Dark Mode' : 'Light Mode'}
+</button>
             {(installPrompt || showIosInstall || isMobileDevice) && (
   <button
     type="button"
