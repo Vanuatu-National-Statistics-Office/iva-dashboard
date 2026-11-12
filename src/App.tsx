@@ -154,6 +154,18 @@ function selectedMonthRows(data: MonthData): Array<Array<string | number>> {
 }
 type Theme = 'light' | 'dark'
 export default function App() {
+  const handleSectionNavigation = (sectionId: string) => {
+  if (!sectionId) return
+
+  const section = document.getElementById(sectionId)
+
+  if (section) {
+    section.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start',
+    })
+  }
+}
   const latestMonth = monthOrder[monthOrder.length - 1]
 const [selectedMonth, setSelectedMonth] = useState<MonthName>(latestMonth)
 const [installPrompt, setInstallPrompt] =
@@ -540,7 +552,33 @@ const sortedCountries = [...data.countries].sort(
   <span></span>
   <span></span>
 </div>
+<div className="section-navigation">
+  <label htmlFor="section-navigation-select">Navigate to:</label>
 
+  <select
+    id="section-navigation-select"
+    defaultValue=""
+    onChange={(e) => {
+      handleSectionNavigation(e.target.value)
+      e.currentTarget.value = ''
+    }}
+  >
+    <option value="" disabled>
+      Jump to section...
+    </option>
+
+    <option value="trend-section">Monthly Visitor Arrivals Trend</option>
+    <option value="mode-section">Mode of Arrival</option>
+    <option value="purpose-chart-section">Main Purpose of Visit</option>
+    <option value="country-section">Country of Usual Residence</option>
+    <option value="departure-section">Departure Composition</option>
+    <option value="summary-section">Visitor Summary</option>
+    <option value="data-section">Monthly Data & Downloads</option>
+    <option value="source-markets-section">Source Markets</option>
+    <option value="purpose-detail-section">Purpose of Visit</option>
+    <option value="revisions-section">Data Source & Revisions</option>
+  </select>
+</div>
       <main className="dashboard">
         <section className="toolbar surface-bar">
           <div>
@@ -643,7 +681,7 @@ const sortedCountries = [...data.countries].sort(
           />
         </section>
 
-        <section className="panel trend-panel">
+        <section id="trend-section" className="panel trend-panel">
           <div className="panel-heading">
             <div>
               <span className="section-kicker">
@@ -658,7 +696,7 @@ const sortedCountries = [...data.countries].sort(
         </section>
 
         <section className="panel-grid two">
-          <article className="panel">
+          <article id="mode-section" className="panel">
             <div className="panel-heading">
               <div><span className="section-kicker">ARRIVALS</span><h2>Mode of Arrival</h2></div>
               <Plane size={22} />
@@ -691,8 +729,7 @@ const sortedCountries = [...data.countries].sort(
 </div>
             </div>
           </article>
-
-          <article className="panel">
+            <article id="purpose-chart-section" className="panel">
             <div className="panel-heading">
               <div><span className="section-kicker">VISITOR PROFILE</span><h2>Main Purpose of Visit</h2></div>
               <Users size={22} />
@@ -702,7 +739,7 @@ const sortedCountries = [...data.countries].sort(
           </article>
         </section>
 
-        <section className="panel">
+        <section id="country-section" className="panel">
           <div className="panel-heading">
             <div>
               <span className="section-kicker">SOURCE MARKET</span>
@@ -715,7 +752,7 @@ const sortedCountries = [...data.countries].sort(
         </section>
 
         <section className="panel-grid two">
-          <article className="panel">
+          <article id="departure-section" className="panel">
             <div className="panel-heading">
               <div><span className="section-kicker">DEPARTURES</span><h2>Departure Composition</h2></div>
               <LogOut size={22} />
@@ -728,7 +765,7 @@ const sortedCountries = [...data.countries].sort(
             </div>
           </article>
 
-          <article className="panel highlight-panel">
+          <article id="summary-section" className="panel highlight-panel">
             <span className="section-kicker">{data.month.toUpperCase()} 2026 SNAPSHOT</span>
             <h2>Visitor Summary</h2>
             <div className="summary-list">
@@ -759,7 +796,7 @@ const sortedCountries = [...data.countries].sort(
           </article>
         </section>
 
-        <section className="panel data-panel">
+        <section id="data-section" className="panel data-panel">
           <div className="panel-heading data-heading">
             <div>
               <span className="section-kicker">DATA & DOWNLOADS</span>
@@ -830,7 +867,7 @@ const sortedCountries = [...data.countries].sort(
         </section>
 
         <section className="panel-grid two detail-grid">
-          <article className="panel compact-panel">
+          <article id="source-markets-section" className="panel compact-panel">
             <div className="panel-heading">
               <div><span className="section-kicker">{selectedMonth.toUpperCase()} DETAIL</span><h2>Source Markets</h2></div>
               <MapPin size={22} />
@@ -847,7 +884,7 @@ const sortedCountries = [...data.countries].sort(
             </div>
           </article>
 
-          <article className="panel compact-panel">
+          <article id="purpose-detail-section" className="panel compact-panel">
             <div className="panel-heading">
               <div><span className="section-kicker">{selectedMonth.toUpperCase()} DETAIL</span><h2>Purpose of Visit</h2></div>
               <Building2 size={22} />
@@ -870,7 +907,7 @@ const sortedCountries = [...data.countries].sort(
             </div>
           </article>
         </section>
-<section className="panel source-revisions">
+<section id="revisions-section" className="panel source-revisions">
   <h3>DATA SOURCE AND REVISIONS</h3>
 
   <p>

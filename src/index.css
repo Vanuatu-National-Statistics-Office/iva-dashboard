@@ -490,3 +490,80 @@ html[data-theme='dark'] .departure-counts strong {
 .vbos-color-strip span:nth-child(4) {
   background: #f5bf62;
 }
+/* =========================
+   SECTION NAVIGATION
+   ========================= */
+
+.section-navigation {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+
+  width: min(100% - 40px, 1280px);
+  margin: 14px auto 0;
+}
+
+.section-navigation label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #526b78;
+  white-space: nowrap;
+}
+
+.section-navigation select {
+  min-width: 280px;
+  padding: 11px 38px 11px 14px;
+
+  border: 1px solid #cbd9df;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #173d5b;
+
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+/* Leave a small gap when jumping to sections */
+#trend-section,
+#mode-section,
+#purpose-chart-section,
+#country-section,
+#departure-section,
+#summary-section,
+#data-section,
+#source-markets-section,
+#purpose-detail-section,
+#revisions-section {
+  scroll-margin-top: 18px;
+}
+
+/* Dark mode */
+html[data-theme='dark'] .section-navigation label {
+  color: #a9bec9;
+}
+
+html[data-theme='dark'] .section-navigation select {
+  background: #182631;
+  color: #f4f8fa;
+  border-color: #3b5260;
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+  .section-navigation {
+    width: calc(100% - 32px);
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+
+  .section-navigation select {
+    width: 100%;
+    min-width: 0;
+  }
+}
