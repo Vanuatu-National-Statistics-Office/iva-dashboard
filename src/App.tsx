@@ -29,11 +29,13 @@ interface BeforeInstallPromptEvent extends Event {
   }>
 }
 const number = new Intl.NumberFormat('en-US')
-const pct = (value: number) => `${Math.round(value)}%`
-
+const pct = (value: number | null) =>
+  value === null ? 'N/A' : `${Math.round(value)}%`
+const formatNumberOrNA = (value: number | null) =>
+  value === null ? 'N/A' : number.format(value)
 
 const reportUrl = (month: MonthName) =>
-  `/iva-dashboard/reports/iva-${month.toLowerCase()}-2026.pdf`
+  `reports/iva-${month.toLowerCase()}-2026.pdf`
 
 const COLORS = {
   teal: '#2f8799',
@@ -131,9 +133,9 @@ function selectedMonthRows(data: MonthData): Array<Array<string | number>> {
     ['Indicator', 'Value'],
     ['Total visitor arrivals', data.totalArrivals],
     ['Air arrivals', data.airArrivals],
-    ['Air share (%)', data.airPercent.toFixed(1)],
-    ['Sea arrivals', data.seaArrivals],
-    ['Sea share (%)', data.seaPercent.toFixed(1)],
+    ['Air share (%)', data.airPercent === null ? 'N/A' : data.airPercent.toFixed(1)],
+    ['Sea arrivals', data.seaArrivals === null ? 'N/A' : data.seaArrivals],
+    ['Sea share (%)', data.seaPercent === null ? 'N/A' : data.seaPercent.toFixed(1)],
     ['Average length of stay (days)', data.averageStay.toFixed(1)],
     ['Average age (years)', data.averageAge.toFixed(1)],
     ['Total departures', data.totalDepartures],
@@ -209,7 +211,10 @@ window.alert(
 
   const totalChange = prior ? percentChange(data.totalArrivals, prior.totalArrivals) : null
   const airChange = prior ? percentChange(data.airArrivals, prior.airArrivals) : null
-  const seaChange = prior ? percentChange(data.seaArrivals, prior.seaArrivals) : null
+  const seaChange =
+  prior && data.seaArrivals !== null
+    ? percentChange(data.seaArrivals, prior.seaArrivals)
+    : null
   const departureChange = prior ? percentChange(data.totalDepartures, prior.totalDepartures) : null
   const stayChange = prior ? data.averageStay - prior.averageStay : null
   const ageChange = prior ? data.averageAge - prior.averageAge : null
@@ -419,9 +424,9 @@ const sortedCountries = [...data.countries].sort(
           item.provisional ? 'Provisional' : 'Published',
           item.totalArrivals,
           item.airArrivals,
-          item.airPercent.toFixed(1),
-          item.seaArrivals,
-          item.seaPercent.toFixed(1),
+          item.airPercent === null ? 'N/A' : item.airPercent.toFixed(1),
+          item.seaArrivals === null ? 'N/A' : item.seaArrivals,
+          item.seaPercent === null ? 'N/A' : item.seaPercent.toFixed(1),
           item.averageStay.toFixed(1),
           item.averageAge.toFixed(1),
           item.totalDepartures,
@@ -565,14 +570,22 @@ const sortedCountries = [...data.countries].sort(
           <KpiCard
             title="Air Visitor Arrivals"
             value={number.format(data.airArrivals)}
-            subtitle={`${pct(data.airPercent)} of visitor arrivals`}
+            subtitle={
+  data.airPercent === null
+    ? 'Share unavailable'
+    : `${pct(data.airPercent)} of visitor arrivals`
+}
             comparison={airChange === null ? null : { value: airChange, label: comparisonLabel }}
             icon={<Plane size={24} />}
           />
           <KpiCard
             title="Sea Visitor Arrivals"
-            value={number.format(data.seaArrivals)}
-            subtitle={`${pct(data.seaPercent)} of visitor arrivals`}
+            value={formatNumberOrNA(data.seaArrivals)}
+            subtitle={
+  data.seaPercent === null
+    ? 'Data not available'
+    : `${pct(data.seaPercent)} of visitor arrivals`
+}
             comparison={seaChange === null ? null : { value: seaChange, label: comparisonLabel }}
             icon={<Ship size={24} />}
           />
@@ -619,10 +632,28 @@ const sortedCountries = [...data.countries].sort(
               <div><span className="section-kicker">ARRIVALS</span><h2>Mode of Arrival</h2></div>
               <Plane size={22} />
             </div>
-            <HighchartsReact highcharts={Highcharts} options={modeOptions} />
+            {data.seaArrivals === null ? (
+  <div className="method-note">
+    <strong>Mode of arrival share unavailable</strong>
+    <span>
+      Sea visitor arrival data is not available for {data.month} {data.year}.
+    </span>
+  </div>
+) : (
+  <HighchartsReact highcharts={Highcharts} options={modeOptions} />
+)}
             <div className="mini-stats">
-              <div><span>Air</span><strong>{number.format(data.airArrivals)}</strong><small>{data.airPercent.toFixed(1)}%</small></div>
-              <div><span>Sea</span><strong>{number.format(data.seaArrivals)}</strong><small>{data.seaPercent.toFixed(1)}%</small></div>
+              <div>
+  <span>Air</span>
+  <strong>{number.format(data.airArrivals)}</strong>
+  <small>{data.airPercent === null ? 'N/A' : `${data.airPercent.toFixed(1)}%`}</small>
+</div>
+
+<div>
+  <span>Sea</span>
+  <strong>{formatNumberOrNA(data.seaArrivals)}</strong>
+  <small>{data.seaPercent === null ? 'N/A' : `${data.seaPercent.toFixed(1)}%`}</small>
+</div>
             </div>
           </article>
 
@@ -667,8 +698,23 @@ const sortedCountries = [...data.countries].sort(
             <h2>Visitor Summary</h2>
             <div className="summary-list">
               <div><span>Total visitor arrivals</span><strong>{number.format(data.totalArrivals)}</strong></div>
-              <div><span>Visitors arriving by sea</span><strong>{pct(data.seaPercent)}</strong></div>
-              <div><span>Visitors arriving by air</span><strong>{pct(data.airPercent)}</strong></div>
+              <div>
+  <span>Visitors arriving by sea</span>
+  <strong>
+    {data.seaPercent === null
+      ? 'N/A'
+      : pct(data.seaPercent)}
+  </strong>
+</div>
+
+<div>
+  <span>Visitors arriving by air</span>
+  <strong>
+    {data.airPercent === null
+      ? number.format(data.airArrivals)
+      : pct(data.airPercent)}
+  </strong>
+</div>
               <div><span>Holiday visitors</span><strong>{pct(data.purposes.find((d) => d.name === 'Holiday')?.share ?? 0)}</strong></div>
               <div><span>Largest air source market</span><strong>{data.countries[0].name} — {pct(data.countries[0].share)}</strong></div>
               <div><span>Average stay</span><strong>{Math.round(data.averageStay)} days</strong></div>
@@ -723,8 +769,19 @@ const sortedCountries = [...data.countries].sort(
                     <tr key={month} className={active ? 'selected-row' : undefined} onClick={() => setSelectedMonth(month)}>
                       <td><strong>{month}</strong></td>
                       <td>{number.format(item.totalArrivals)}</td>
-                      <td>{number.format(item.airArrivals)} <small>({item.airPercent.toFixed(1)}%)</small></td>
-                      <td>{number.format(item.seaArrivals)} <small>({item.seaPercent.toFixed(1)}%)</small></td>
+                      <td>
+  {number.format(item.airArrivals)}
+  <small>
+    {item.airPercent === null ? ' (N/A)' : ` (${item.airPercent.toFixed(1)}%)`}
+  </small>
+</td>
+
+<td>
+  {formatNumberOrNA(item.seaArrivals)}
+  <small>
+    {item.seaPercent === null ? ' (N/A)' : ` (${item.seaPercent.toFixed(1)}%)`}
+  </small>
+</td>
                       <td>{item.averageStay.toFixed(1)} days</td>
                       <td>{item.averageAge.toFixed(1)} yrs</td>
                       <td>{number.format(item.totalDepartures)}</td>

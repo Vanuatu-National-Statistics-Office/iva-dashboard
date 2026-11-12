@@ -132,7 +132,17 @@ def optional_count(value: object, *, field: str) -> int:
     if text.lower() in {"", "-", "na", "n/a", "#n/a"}:
         return 0
     return integer(value, field=field)
+def optional_count_or_none(value: object, *, field: str) -> Optional[int]:
+    """Return None when the source says data is unavailable."""
+    if value is None:
+        return None
 
+    text = str(value).strip()
+
+    if text.lower() in {"", "-", "na", "n/a", "#n/a"}:
+        return None
+
+    return integer(value, field=field)
 
 @dataclass
 class SheetData:
@@ -301,11 +311,27 @@ def extract_year(path: Path, year: int) -> Dict[str, dict]:
         stay_row, _ = stay_rows[month]
         age_row, _ = age_rows[month]
 
-        air = integer(sheets["summary"].get(summary_row, 14), field=f"{month} air visitors")
-        yacht = integer(sheets["summary"].get(summary_row, 26), field=f"{month} yacht visitors")
-        cruise = integer(sheets["summary"].get(summary_row, 28), field=f"{month} cruise visitors")
-        sea = yacht + cruise
-        total = air + sea
+        air = integer(
+            sheets["summary"].get(summary_row, 14),
+            field=f"{month} air visitors"
+        )
+
+        yacht = optional_count_or_none(
+            sheets["summary"].get(summary_row, 26),
+            field=f"{month} yacht visitors"
+        )
+
+        cruise = optional_count_or_none(
+            sheets["summary"].get(summary_row, 28),
+            field=f"{month} cruise visitors"
+        )
+
+        sea = None if yacht is None or cruise is None else yacht + cruise
+
+        total = integer(
+            sheets["summary"].get(summary_row, 30),
+            field=f"{month} total visitors"
+        )
 
         resident_departures = integer(sheets["summary"].get(summary_row, 22), field=f"{month} resident departures")
         visitor_departures = integer(sheets["summary"].get(summary_row, 24), field=f"{month} visitor departures")
@@ -349,8 +375,8 @@ def extract_year(path: Path, year: int) -> Dict[str, dict]:
             "totalArrivals": total,
             "airArrivals": air,
             "seaArrivals": sea,
-            "airPercent": air / total * 100,
-            "seaPercent": sea / total * 100,
+            "airPercent": None if sea is None else air / total * 100,
+            "seaPercent": None if sea is None else sea / total * 100,
             "averageStay": average_stay,
             "averageAge": average_age,
             "totalDepartures": total_departures,
@@ -429,9 +455,13 @@ def extract_prior_year_kpis(path: Path, year: int, months: Iterable[str]) -> Dic
     return result
 
 
-def ts_number(value: float | int) -> str:
+def ts_number(value: float | int | None) -> str:
+    if value is None:
+        return "null"
+
     if isinstance(value, int):
         return str(value)
+
     return repr(float(value))
 
 
@@ -471,9 +501,9 @@ def write_data_ts(data: Mapping[str, dict], output: Path, source_name: str, year
         "  provisional: boolean",
         "  totalArrivals: number",
         "  airArrivals: number",
-        "  seaArrivals: number",
-        "  airPercent: number",
-        "  seaPercent: number",
+        "  seaArrivals: number | null;",
+        "  airPercent: number | null;",
+        "  seaPercent: number | null;",
         "  averageStay: number",
         "  averageAge: number",
         "  totalDepartures: number",
@@ -505,7 +535,7 @@ def write_data_ts(data: Mapping[str, dict], output: Path, source_name: str, year
             f"    provisional: {'true' if item['provisional'] else 'false'},",
             f"    totalArrivals: {item['totalArrivals']},",
             f"    airArrivals: {item['airArrivals']},",
-            f"    seaArrivals: {item['seaArrivals']},",
+            f"    seaArrivals: {ts_number(item['seaArrivals'])},",
             f"    airPercent: {ts_number(item['airPercent'])},",
             f"    seaPercent: {ts_number(item['seaPercent'])},",
             f"    averageStay: {ts_number(item['averageStay'])},",
@@ -602,14 +632,18 @@ def main() -> int:
     months = sorted(data, key=MONTH_INDEX.get)
     latest = months[-1]
     latest_data = data[latest]
+
+    sea_latest = latest_data["seaArrivals"]
+    sea_text = "N/A" if sea_latest is None else f"{sea_latest:,}"
+
     print(f"Selected workbook: {workbook}")
     print(f"Detected months: {', '.join(months)}")
     print(f"Latest month: {latest} {args.year}")
     print(
-        f"Latest totals: total={latest_data['totalArrivals']:,}, "
-        f"air={latest_data['airArrivals']:,}, sea={latest_data['seaArrivals']:,}, "
-        f"departures={latest_data['totalDepartures']:,}"
-    )
+    f"Latest totals: total={latest_data['totalArrivals']:,}, "
+    f"air={latest_data['airArrivals']:,}, sea={sea_text}, "
+    f"departures={latest_data['totalDepartures']:,}"
+  )
     print(f"Prior-year KPIs ({prior_year}): {', '.join(sorted(prior, key=MONTH_INDEX.get)) or 'none'}")
     if missing_prior:
         print(f"WARNING: no prior-year KPIs for: {', '.join(missing_prior)}")
