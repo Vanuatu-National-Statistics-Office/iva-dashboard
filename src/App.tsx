@@ -654,7 +654,9 @@ const sortedCountries = [...data.countries].sort(
 <div>
   <span>Sea</span>
   <strong>{formatNumberOrNA(data.seaArrivals)}</strong>
-  <small>{data.seaPercent === null ? 'N/A' : `${data.seaPercent.toFixed(1)}%`}</small>
+  {data.seaPercent !== null && (
+  <small>{data.seaPercent.toFixed(1)}%</small>
+)}
 </div>
             </div>
           </article>
