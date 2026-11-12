@@ -646,7 +646,9 @@ const sortedCountries = [...data.countries].sort(
               <div>
   <span>Air</span>
   <strong>{number.format(data.airArrivals)}</strong>
-  <small>{data.airPercent === null ? 'N/A' : `${data.airPercent.toFixed(1)}%`}</small>
+  {data.airPercent !== null && (
+  <small>{data.airPercent.toFixed(1)}%</small>
+)}
 </div>
 
 <div>
