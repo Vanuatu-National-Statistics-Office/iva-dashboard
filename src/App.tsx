@@ -469,7 +469,7 @@ const sortedCountries = [...data.countries].sort(
 
   <div className="brand-line">
     <img
-      src="/iva-dashboard/images/VBoS_logo.png"
+      src="images/VBoS_logo.png"
       alt="Vanuatu Bureau of Statistics"
       className="vbos-header-logo"
     />
@@ -502,7 +502,7 @@ const sortedCountries = [...data.countries].sort(
 <div className="hero-side">
 
   <img
-    src="/iva-dashboard/images/vanuatu-coat-of-arms.png"
+    src="images/vanuatu-coat-of-arms.png"
     alt="Vanuatu Coat of Arms"
     className="coat-arms-logo"
   />
@@ -534,6 +534,12 @@ const sortedCountries = [...data.countries].sort(
          
         </div>
       </header>
+      <div className="vbos-color-strip" aria-hidden="true">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
 
       <main className="dashboard">
         <section className="toolbar surface-bar">

@@ -468,3 +468,25 @@ html[data-theme='dark'] .departure-counts span {
 html[data-theme='dark'] .departure-counts strong {
   color: #ffffff;
 }
+.vbos-color-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  height: 30px;
+}
+
+.vbos-color-strip span:nth-child(1) {
+  background: #1c6b83;
+}
+
+.vbos-color-strip span:nth-child(2) {
+  background: #dbaa58;
+}
+
+.vbos-color-strip span:nth-child(3) {
+  background: #348890;
+}
+
+.vbos-color-strip span:nth-child(4) {
+  background: #f5bf62;
+}
